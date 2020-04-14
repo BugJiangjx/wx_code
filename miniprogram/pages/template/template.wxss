@@ -1,0 +1,23 @@
+.scroll-view-item{
+  padding: 6rpx;
+  height: 130rpx;
+  border-bottom: 4rpx solid #108ee9;
+  display: flex;
+  justify-items: center;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+.view-item {
+  font-size: 30rpx;
+}
+
+.view-item-button {
+  font-size: 20rpx;
+}
+
+image {
+  height: 100rpx;
+  width: 100rpx;
+  border: 8rpx solid #6c928c;
+  border-radius: 50%;
+}

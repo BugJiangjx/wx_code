@@ -1,0 +1,11 @@
+<import src ="../template/template.wxml"/>
+<view class="page">
+  <navigator url="../user/addForm" open-type="navigate" class="uploader-text">
+    <button style="float: right" type="primary" size="mini" plain>添加</button>
+  </navigator>
+</view>
+<view class="list-item">
+  <view wx:for="{{list}}" wx:key="a">
+   <template is="list" data="{{ item: item }}"></template>
+  </view>
+</view>

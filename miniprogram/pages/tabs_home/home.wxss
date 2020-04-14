@@ -1,0 +1,6 @@
+@import "../template/template.wxss";
+.page {
+  padding: 10rpx;
+  background: #87d068;
+  height: 80rpx;
+}

@@ -75,8 +75,10 @@ Page({
    */
   onLoad: function (options) {
     if (Object.keys(options).length > 0) {
+      wx.setNavigationBarTitle({ title: '修改' });
       this.setData({ formData: options });
     } else {
+      wx.setNavigationBarTitle({ title: '新增' });
       this.setData({ formData: {} });
     }
   },

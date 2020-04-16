@@ -1,7 +1,7 @@
 <template name="list">
   <view class="scroll-view-item">
     <view class="top-info">
-      <image mode="scaleToFill" src="../../img/userImg.png"></image>
+      <image mode="scaleToFill" src="{{item.fileUrl}}"></image>
     </view>
     <view class="view-item">
       <text style="margin-right: 15rpx">姓名:</text>

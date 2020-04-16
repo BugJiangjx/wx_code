@@ -13,6 +13,13 @@
           <input value="{{formData.age}}" name="age" class="weui-input" type="number" placeholder="请输入年龄"/>
         </view>
       </view>
+      <view class="weui-cells__title">头像</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="uploader-text" bindtap="doUpload">
+          <text class="uploader-button">上传</text>
+        </view>
+        <image src="{{fileSrc || formData.fileUrl}}" class="img-style" wx:if="{{fileSrc || formData.fileUrl}}" mode="aspectFit"></image>
+      </view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
         <button type="primary" formType="submit">提交</button>

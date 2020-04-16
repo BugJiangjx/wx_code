@@ -4,11 +4,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    formData: {}
+    formData: {},
+    fileSrc: '',
+    fileId: ''
   },
-
+  
   formSubmit: function (e) {
-    const { formData } = this.data;
+    const { formData, fileId } = this.data;
     const { value } = e.detail;
     const db = wx.cloud.database();
     if (value.name === '' || value.age === '') {
@@ -19,7 +21,7 @@ Page({
     }
     if (formData._id) {
       db.collection('userInfo').doc(formData._id).update({
-        data: value,
+        data: { ...value, fileId },
         success: res => {
           wx.showToast({
             title: '修改记录成功',
@@ -44,7 +46,7 @@ Page({
       });
     } else {
       db.collection('userInfo').add({
-        data: value,
+        data: { ...value, fileId },
         success: res => {
           wx.showToast({
             title: '新增记录成功',
@@ -68,6 +70,46 @@ Page({
         }
       })
     }
+  },
+
+  doUpload() {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        console.log('res', res);
+        wx.showLoading({
+          title: '上传中',
+        });
+        const filePath = res.tempFilePaths[0];
+        this.setData({
+          fileSrc: filePath
+        });
+        const cloudPath = "img/" + new Date().getTime() +"-"+ Math.floor(Math.random() * 1000);
+        wx.cloud.uploadFile({
+          cloudPath,
+          filePath,
+          success: res => {
+            console.log(res);
+            this.setData({ fileId: res.fileID });
+          },
+          fail: e => {
+            console.error('[上传文件] 失败：', e)
+            wx.showToast({
+              icon: 'none',
+              title: '上传失败',
+            })
+          },
+          complete: () => {
+            wx.hideLoading()
+          }
+        });
+      },
+      fail: e => {
+        console.error(e)
+      }
+    })
   },
 
   /**

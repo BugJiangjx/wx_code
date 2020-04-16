@@ -15,6 +15,23 @@ Page({
     this.onLoadData();
   },
 
+  onGetFile() {
+    const { list } = this.data;
+    if (list.length > 0) {
+      Promise.all(
+        list.map(i => {
+          return wx.cloud.downloadFile({ fileID: i.fileId }).then(item => {
+            return item.tempFilePath;
+          }).catch(err => {
+            console.log('下载失败:', err.message)
+          })
+        })
+      ).then(item => {
+        this.setData({ list: item.map((i, index) => ({ ...list[index], fileUrl: i })) });
+      });
+    }
+  },
+
   onLoadData: function () {
     wx.showLoading({
       title: '加载中',
@@ -22,7 +39,7 @@ Page({
     const db = wx.cloud.database();
     db.collection('userInfo').get({
       success: res => {
-        this.setData({ list: res.data });
+        this.setData({ list: res.data }, this.onGetFile);
       },
       fail: err => {
         wx.showToast({
@@ -39,7 +56,7 @@ Page({
   onUpdateUser: options => {
     const { item } = options.currentTarget.dataset;
     wx.navigateTo({
-      url: `../user/addForm?_id=${item._id}&name=${item.name}&age=${item.age}`,
+      url: `../user/addForm?_id=${item._id}&name=${item.name}&age=${item.age}&fileUrl=${item.fileUrl}`,
     });
   },
 
@@ -106,7 +123,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.onLoadData();
   },
 
   /**
